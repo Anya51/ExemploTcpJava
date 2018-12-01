@@ -5,6 +5,8 @@ package br.ufs.dcomp.ExemploTcpJava;
 
 import java.net.*;
 import java.io.*;
+import java.util.Scanner;
+
 public class TCPServer{
     public static void main(String[] args){
         
@@ -19,20 +21,26 @@ public class TCPServer{
             
             InputStream is = sock.getInputStream(); //Canal de entrada de dados
             OutputStream os = sock.getOutputStream(); //Canal de saída de dados
-            byte[] buf = new byte[20]; // buffer de recepção
 
-            System.out.print("[ Aguardando recebimento de mensagem   ..............  ");
-            is.read(buf); // Operação bloqueante (aguardando chegada de dados)
-            System.out.println("[OK] ]");
             
-            String msg = new String(buf); // Mapeando vetor de bytes recebido para String
-            String msg_retorno = "Ola, Cliente.";
+            while(true){
+                byte[] buf = new byte[20]; // buffer de recepção
+                System.out.print("[ Aguardando recebimento de mensagem   ..............  ");
+                is.read(buf); // Operação bloqueante (aguardando chegada de dados)
+                System.out.println("[OK] ]");
             
-            System.out.println("  Mensagem recebida: "+ msg);
+                String msg = new String(buf); // Mapeando vetor de bytes recebido para String
             
-            byte[] buf_retorno = msg_retorno.getBytes(); // Obtendo a respresntação em bytes da mensagem
-            os.write(buf_retorno);
-            
+                System.out.println("  Mensagem recebida: "+ msg);
+                System.out.print("  Mensagem a enviar: ");
+                Scanner sc1 = new Scanner(System.in); 
+                String msg_retorno = sc1.nextLine();
+                byte[] buf_retorno = msg_retorno.getBytes(); // Obtendo a respresntação em bytes da mensagem
+                System.out.print("[ Enviando mensagem    ..............................  ");
+                os.write(buf_retorno);
+                System.out.println("[OK] ]");
+
+            }
             
             
         }catch(Exception e){System.out.println(e);}    
